@@ -4,7 +4,23 @@ A browser code editor with Express routes for language-specific execution and re
 
 The application demonstrates how an editor request becomes a compiler or interpreter invocation and how output returns to the browser. It also includes the surrounding user/session pages. The execution path is a local systems experiment, not an isolated multi-tenant code runner.
 
-[Quick start](#quick-start) · [How it works](#how-it-works) · [Development](#development) · [Contributing](CONTRIBUTING.md)
+[Preview](#application-preview) · [Quick start](#quick-start) · [Architecture](#architecture-and-request-flow) · [Development](#development) · [Contributing](CONTRIBUTING.md)
+
+## Application preview
+
+![CodeCraft Python editor](docs/screenshots/code-editor.png)
+
+The Python editor with its code and input/output panes. The capture shows the editing interface before execution.
+
+[Screenshot notes](docs/screenshots/README.md)
+
+## Capabilities
+
+| Workflow | Result |
+|---|---|
+| Choose a language | Use a language-specific browser editing page. |
+| Submit a program | Send source and input to the configured execution route. |
+| Inspect output | Read compiler or interpreter output returned by the backend. |
 
 ## Quick start
 
@@ -21,14 +37,14 @@ npm start
 
 Configure MySQL, session/authentication settings and required compiler/interpreter paths. `npm start` uses `bin/www`; inspect its port configuration. Host subprocess execution is not a secure sandbox. Keep execution local until isolation, resource limits and access controls exist. Earlier percentage performance claims are omitted because no reproducible benchmark accompanies them.
 
-## How it works
+## Architecture and request flow
 
 1. Configure the database, application settings and language runtimes.
 2. Open an editor page for the target language.
 3. Submit source code and any input to the backend.
 4. Inspect stdout, stderr or compiler feedback in the editor view.
 
-### Component boundaries
+### Component model
 
 ```mermaid
 sequenceDiagram
@@ -43,7 +59,7 @@ sequenceDiagram
     Note over E,P: Host execution requires isolation before public use
 ```
 
-### Design decisions
+### Engineering decisions
 
 The npm start script launches `bin/www`, which loads the Express application. Additional execution logic lives in `server.js` and route files; inspect the actual route wiring before assuming that every standalone server handler is exposed by the default entrypoint.
 
